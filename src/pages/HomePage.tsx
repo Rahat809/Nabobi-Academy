@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageRoute } from '../types';
 import { InstructorSection } from '../components/InstructorSection';
+import { FeaturedVideoSection } from '../components/FeaturedVideoSection';
 import { 
   ArrowRight, 
   BookOpen, 
@@ -251,6 +252,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
         </div>
       </section>
+
+      {/* FEATURED VERTICAL VIDEO SECTION */}
+      <FeaturedVideoSection onNavigate={onNavigate} />
 
       {/* WHY JOIN THIS COURSE — 02 ACADEMY WARM IVORY (Clean Editorial) */}
       <section className="py-20 bg-white border-t border-[#0F3D32]/10">
