@@ -1,0 +1,6 @@
+{
+  "name": "NABA – নববী একাডেমি | অনলাইন একাডেমি",
+  "description": "কোরআন-সুন্নাহভিত্তিক রুকইয়াহ, হিজামা ও নেচারোপ্যাথিক ট্রেইনিং এবং প্র্যাকটিক্যাল লার্নিংয়ের নির্ভরযোগ্য প্ল্যাটফর্ম।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

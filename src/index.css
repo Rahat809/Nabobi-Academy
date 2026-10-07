@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-emerald: #0F3D32;
+    --brand-emerald-dark: #0A2922;
+    --brand-ivory: #FBF7EC;
+    --brand-gold: #D8B45E;
+    --brand-gold-hover: #C8A44E;
+    --brand-charcoal: #1E1E1E;
+  }
+
+  html {
+    font-family: 'Hind Siliguri', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #FBF7EC;
+    color: #1E1E1E;
+    overflow-x: hidden;
+  }
+}
+
+/* 01 ACADEMY DEEP EMERALD (Primary Background) */
+.bg-academy-emerald {
+  background-color: #0F3D32;
+  background-image: radial-gradient(circle at 80% 20%, rgba(201, 169, 98, 0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(10, 41, 34, 0.9) 0%, transparent 60%);
+}
+
+/* 02 ACADEMY WARM IVORY (Clean Editorial with Natural Soft Shadows) */
+.bg-academy-ivory {
+  background-color: #FBF7EC;
+  background-image: radial-gradient(ellipse at 15% 15%, rgba(0, 0, 0, 0.02) 0%, transparent 40%),
+                    radial-gradient(ellipse at 85% 75%, rgba(201, 169, 98, 0.04) 0%, transparent 50%);
+}
+
+/* 04 ACADEMY CHARCOAL SCHOLARLY (Special Use) */
+.bg-academy-charcoal {
+  background-color: #1E1E1E;
+  background-image: radial-gradient(circle at 50% 10%, rgba(201, 169, 98, 0.06) 0%, transparent 60%),
+                    radial-gradient(circle at 10% 90%, rgba(15, 61, 50, 0.25) 0%, transparent 70%);
+}
+
