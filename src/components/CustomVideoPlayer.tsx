@@ -5,8 +5,7 @@ import {
   Volume2, 
   VolumeX, 
   Maximize, 
-  RotateCcw,
-  SlidersHorizontal
+  RotateCcw
 } from 'lucide-react';
 
 interface CustomVideoPlayerProps {
@@ -14,7 +13,6 @@ interface CustomVideoPlayerProps {
 }
 
 export const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({ className = '' }) => {
-  const [playerMode, setPlayerMode] = useState<'html5' | 'cloudinary'>('html5');
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +25,6 @@ export const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({ className 
 
   const mp4Url = 'https://res.cloudinary.com/i6tswbzy/video/upload/Naba_WEB.mp4';
   const posterUrl = 'https://res.cloudinary.com/i6tswbzy/video/upload/Naba_WEB.jpg';
-  const cloudinaryEmbedUrl = 'https://player.cloudinary.com/embed/?cloud_name=i6tswbzy&public_id=Naba_WEB&player[fluid]=true&player[controls]=true';
 
   useEffect(() => {
     const video = videoRef.current;
@@ -46,16 +43,23 @@ export const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({ className 
       setShowControls(true);
     };
 
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('ended', handleEnded);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
 
     return () => {
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
     };
-  }, [playerMode]);
+  }, []);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -65,9 +69,7 @@ export const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({ className 
       video.play().then(() => {
         setIsPlaying(true);
         startControlsTimeout();
-      }).catch(() => {
-        // Autoplay policy fallback
-      });
+      }).catch(() => {});
     } else {
       video.pause();
       setIsPlaying(false);
@@ -103,7 +105,8 @@ export const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({ className 
     }
   };
 
-  const handleRestart = () => {
+  const handleRestart = (e: React.MouseEvent) => {
+    e.stopPropagation();
     const video = videoRef.current;
     if (!video) return;
 
@@ -119,10 +122,10 @@ export const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({ className 
       if (isPlaying) {
         setShowControls(false);
       }
-    }, 2800);
+    }, 2400);
   };
 
-  const handleMouseMove = () => {
+  const handleUserActivity = () => {
     setShowControls(true);
     if (isPlaying) {
       startControlsTimeout();
@@ -136,181 +139,138 @@ export const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({ className 
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  return (
-    <div className={`w-full max-w-[340px] sm:max-w-[360px] mx-auto select-none ${className}`}>
-      
-      {/* Player Mode Switcher (Sleek Pills) */}
-      <div className="flex items-center justify-between gap-2 mb-2 px-1 text-xs">
-        <span className="text-[#0F3D32] font-semibold text-[11px] tracking-wide flex items-center gap-1">
-          <SlidersHorizontal className="w-3 h-3 text-[#D8B45E]" />
-          <span>প্লেয়ার মোড:</span>
-        </span>
-        <div className="inline-flex rounded-lg bg-[#0F3D32]/10 p-0.5 border border-[#0F3D32]/15">
-          <button
-            type="button"
-            onClick={() => {
-              if (videoRef.current) videoRef.current.pause();
-              setIsPlaying(false);
-              setPlayerMode('html5');
-            }}
-            className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
-              playerMode === 'html5'
-                ? 'bg-[#0F3D32] text-[#FBF7EC] shadow-xs'
-                : 'text-[#0F3D32]/80 hover:text-[#0F3D32]'
-            }`}
-          >
-            HTML5 Player
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (videoRef.current) videoRef.current.pause();
-              setIsPlaying(false);
-              setPlayerMode('cloudinary');
-            }}
-            className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
-              playerMode === 'cloudinary'
-                ? 'bg-[#0F3D32] text-[#FBF7EC] shadow-xs'
-                : 'text-[#0F3D32]/80 hover:text-[#0F3D32]'
-            }`}
-          >
-            Cloudinary Embed
-          </button>
-        </div>
-      </div>
+  const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-      {/* Main Video Device Frame */}
+  return (
+    <div className={`w-full flex flex-col items-center justify-center select-none ${className}`}>
+      
+      {/* Explicit 3:4 Video Frame with Gold Border & Rounded Corners */}
       <div
         ref={containerRef}
-        onMouseMove={handleMouseMove}
+        onMouseMove={handleUserActivity}
+        onTouchStart={handleUserActivity}
         onMouseLeave={() => isPlaying && setShowControls(false)}
-        className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#D8B45E]/60 shadow-xl bg-black aspect-[9/16] group"
+        style={{ aspectRatio: '3/4' }}
+        className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[3/4] rounded-2xl sm:rounded-3xl border-2 border-[#c5a059] shadow-2xl shadow-[#0F3D32]/25 overflow-hidden bg-black [transform:translateZ(0)] isolate"
       >
-        {playerMode === 'html5' ? (
-          <>
-            {/* HTML5 Native Video Tag */}
-            <video
-              ref={videoRef}
-              src={mp4Url}
-              poster={posterUrl}
-              preload="metadata"
-              playsInline
-              onClick={togglePlay}
-              className="w-full h-full object-cover cursor-pointer"
-            >
-              <source src={mp4Url} type="video/mp4" />
-              আপনার ব্রাউজার HTML5 ভিডিও প্লেয়ার সাপোর্ট করে না।
-            </video>
+        {/* HTML5 Native Video Tag - Clipped Cleanly with Object Cover */}
+        <video
+          ref={videoRef}
+          src={mp4Url}
+          poster={posterUrl}
+          preload="metadata"
+          playsInline
+          onClick={togglePlay}
+          style={{ aspectRatio: '3/4' }}
+          className="w-full h-full object-cover rounded-2xl sm:rounded-3xl block cursor-pointer bg-black"
+        >
+          <source src={mp4Url} type="video/mp4" />
+          আপনার ব্রাউজার HTML5 ভিডিও প্লেয়ার সাপোর্ট করে না।
+        </video>
 
-            {/* Big Center Play Button Overlay (when paused) */}
-            {!isPlaying && (
-              <div
-                onClick={togglePlay}
-                className="absolute inset-0 bg-black/35 flex items-center justify-center cursor-pointer transition-opacity z-20 backdrop-blur-[1px]"
-              >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#0F3D32]/90 border-2 border-[#D8B45E] flex items-center justify-center text-[#D8B45E] shadow-2xl transition-transform transform hover:scale-110 active:scale-95">
-                  <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-current ml-1" />
-                </div>
-              </div>
-            )}
-
-            {/* Custom Control Bar */}
-            <div
-              className={`absolute bottom-0 inset-x-0 p-3 sm:p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent transition-opacity duration-300 z-30 ${
-                showControls || !isPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              }`}
-            >
-              {/* Progress Slider Bar */}
-              <div className="relative flex items-center mb-2.5">
-                <input
-                  type="range"
-                  min="0"
-                  max={duration || 100}
-                  step="0.1"
-                  value={currentTime}
-                  onChange={handleSeek}
-                  aria-label="ভিডিও টাইমলাইন"
-                  className="w-full h-1.5 bg-white/30 rounded-lg appearance-none cursor-pointer accent-[#D8B45E]"
-                />
-              </div>
-
-              {/* Bottom Buttons Row */}
-              <div className="flex items-center justify-between text-white text-xs">
-                
-                {/* Left Controls: Play/Pause, Replay, Time */}
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={togglePlay}
-                    className="p-1.5 rounded-lg hover:bg-white/15 text-[#D8B45E] transition-colors cursor-pointer"
-                    aria-label={isPlaying ? 'পজ করুন' : 'প্লে করুন'}
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-4 h-4 fill-current" />
-                    ) : (
-                      <Play className="w-4 h-4 fill-current" />
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleRestart}
-                    className="p-1.5 rounded-lg hover:bg-white/15 text-white/80 transition-colors cursor-pointer"
-                    title="শুরু থেকে দেখুন"
-                    aria-label="শুরু থেকে দেখুন"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                  </button>
-
-                  <span className="font-mono text-[11px] text-white/90">
-                    {formatTime(currentTime)} / {formatTime(duration)}
-                  </span>
-                </div>
-
-                {/* Right Controls: Mute/Unmute, Fullscreen */}
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={toggleMute}
-                    className="p-1.5 rounded-lg hover:bg-white/15 text-[#D8B45E] transition-colors cursor-pointer"
-                    aria-label={isMuted ? 'আনমিউট করুন' : 'মিউট করুন'}
-                  >
-                    {isMuted ? (
-                      <VolumeX className="w-4 h-4" />
-                    ) : (
-                      <Volume2 className="w-4 h-4" />
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={toggleFullscreen}
-                    className="p-1.5 rounded-lg hover:bg-white/15 text-white/90 transition-colors cursor-pointer"
-                    aria-label="ফুলস্ক্রিন করুন"
-                  >
-                    <Maximize className="w-4 h-4" />
-                  </button>
-                </div>
-
-              </div>
+        {/* Center Play Button Overlay (when paused) */}
+        {!isPlaying && (
+          <div
+            onClick={togglePlay}
+            className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer transition-opacity z-20 backdrop-blur-[1px]"
+            aria-label="ভিডিও প্লে করুন"
+          >
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#0F3D32]/90 border-2 border-[#c5a059] flex items-center justify-center text-[#c5a059] shadow-2xl transition-transform transform hover:scale-110 active:scale-95">
+              <Play className="w-8 h-8 sm:w-9 sm:h-9 fill-current ml-1" />
             </div>
-          </>
-        ) : (
-          /* Cloudinary Official Player Embed Mode */
-          <iframe
-            src={cloudinaryEmbedUrl}
-            title="NABA নববী একাডেমি - ক্লাউডিনারি প্লেয়ার"
-            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full border-0"
-          />
+          </div>
         )}
+
+        {/* Clean, Non-Intrusive HTML5 Control Bar */}
+        <div
+          className={`absolute bottom-0 inset-x-0 pt-10 pb-3 px-3.5 sm:px-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent transition-opacity duration-300 z-30 ${
+            showControls || !isPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          {/* Custom Timeline Progress Bar */}
+          <div className="relative flex items-center mb-2.5 group/seek">
+            <input
+              type="range"
+              min="0"
+              max={duration || 100}
+              step="0.1"
+              value={currentTime}
+              onChange={handleSeek}
+              aria-label="ভিডিও অগ্রগতি"
+              className="w-full h-1 bg-white/25 rounded-full appearance-none cursor-pointer accent-[#c5a059] focus:outline-hidden"
+              style={{
+                background: `linear-gradient(to right, #c5a059 ${progressPercent}%, rgba(255,255,255,0.25) ${progressPercent}%)`
+              }}
+            />
+          </div>
+
+          {/* Bottom Controls Row: Play, Replay, Time, Volume, Fullscreen */}
+          <div className="flex items-center justify-between text-white text-xs">
+            
+            {/* Left Controls: Play/Pause, Replay, Time */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={togglePlay}
+                className="p-1 rounded-md hover:bg-white/15 text-[#c5a059] transition-colors cursor-pointer"
+                aria-label={isPlaying ? 'পজ করুন' : 'প্লে করুন'}
+              >
+                {isPlaying ? (
+                  <Pause className="w-4 h-4 fill-current" />
+                ) : (
+                  <Play className="w-4 h-4 fill-current" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleRestart}
+                className="p-1 rounded-md hover:bg-white/15 text-white/80 hover:text-white transition-colors cursor-pointer"
+                title="শুরু থেকে দেখুন"
+                aria-label="শুরু থেকে দেখুন"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+
+              <span className="font-mono text-[11px] text-white/90 tracking-tight">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </span>
+            </div>
+
+            {/* Right Controls: Mute/Unmute, Fullscreen */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={toggleMute}
+                className="p-1 rounded-md hover:bg-white/15 text-[#c5a059] transition-colors cursor-pointer"
+                aria-label={isMuted ? 'আনমিউট করুন' : 'মিউট করুন'}
+              >
+                {isMuted ? (
+                  <VolumeX className="w-4 h-4" />
+                ) : (
+                  <Volume2 className="w-4 h-4" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                className="p-1 rounded-md hover:bg-white/15 text-white/90 hover:text-white transition-colors cursor-pointer"
+                aria-label="ফুলস্ক্রিন করুন"
+              >
+                <Maximize className="w-4 h-4" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
       {/* Video Caption Note */}
       <div className="text-center mt-3">
         <span className="text-xs text-[#1E1E1E]/60 font-medium">
-          * ক্লাউডিনারি হাই-ডেফিনিশন স্ট্রিমিং ও মসৃণ প্লেব্যাক
+          * ভিডিওটি সরাসরি প্লে করতে ট্যাপ বা ক্লিক করুন
         </span>
       </div>
 
