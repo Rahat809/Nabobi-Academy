@@ -45,3 +45,113 @@
                     radial-gradient(circle at 10% 90%, rgba(15, 61, 50, 0.25) 0%, transparent 70%);
 }
 
+/* =========================================================================
+   HERO DYNAMIC MOTION & ENTRANCE ANIMATIONS
+   ========================================================================= */
+
+@keyframes heroFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes waveDrift {
+  0%, 100% {
+    transform: translateY(0px) scaleY(1);
+  }
+  50% {
+    transform: translateY(-16px) scaleY(1.06);
+  }
+}
+
+@keyframes waveDriftSecondary {
+  0%, 100% {
+    transform: translateY(0px) scaleX(1);
+  }
+  50% {
+    transform: translateY(14px) scaleX(1.03);
+  }
+}
+
+@keyframes ambientPulse {
+  0%, 100% {
+    opacity: 0.18;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: translate(25px, -18px) scale(1.12);
+  }
+}
+
+@keyframes floatingOrb {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-15px) translateX(10px);
+  }
+  66% {
+    transform: translateY(10px) translateX(-10px);
+  }
+}
+
+.animate-hero-fade-up {
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-hero-fade-in {
+  animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-wave-drift {
+  animation: waveDrift 9s ease-in-out infinite;
+}
+
+.animate-wave-drift-slow {
+  animation: waveDriftSecondary 13s ease-in-out infinite;
+}
+
+.animate-ambient-pulse {
+  animation: ambientPulse 8s ease-in-out infinite;
+}
+
+.animate-floating-orb {
+  animation: floatingOrb 10s ease-in-out infinite;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-350 {
+  animation-delay: 350ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animation-delay-650 {
+  animation-delay: 650ms;
+}
+
+

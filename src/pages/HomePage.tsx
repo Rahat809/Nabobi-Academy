@@ -29,21 +29,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* HERO SECTION — 01 ACADEMY DEEP EMERALD (Primary Background) */}
       <section className="relative bg-academy-emerald text-[#FBF7EC] pt-16 pb-20 lg:pt-24 lg:pb-28 overflow-hidden">
         
-        {/* Subtle decorative Antique Gold curve accent line in background */}
-        <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 opacity-25 pointer-events-none select-none">
-          <svg viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+        {/* Subtle Ambient Glowing Orbs */}
+        <div className="absolute top-12 left-[12%] w-72 h-72 rounded-full bg-[#D8B45E]/10 blur-3xl pointer-events-none select-none animate-floating-orb" />
+        <div className="absolute bottom-16 right-[10%] w-80 h-80 rounded-full bg-[#D8B45E]/12 blur-3xl pointer-events-none select-none animate-ambient-pulse" />
+
+        {/* Dynamic Background Animated Waves */}
+        <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 opacity-30 pointer-events-none select-none overflow-hidden">
+          {/* Primary wave */}
+          <svg viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto animate-wave-drift">
             <path
               d="M-50 220C300 290 600 80 1000 180C1250 240 1400 120 1500 140"
-              stroke="#C9A962"
-              strokeWidth="2"
+              stroke="#D8B45E"
+              strokeWidth="2.5"
+            />
+          </svg>
+          {/* Secondary subtle counter-wave */}
+          <svg viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto -mt-36 opacity-60 animate-wave-drift-slow">
+            <path
+              d="M-40 120C280 60 620 250 980 150C1220 90 1380 210 1480 190"
+              stroke="#D8B45E"
+              strokeWidth="1.5"
+              strokeDasharray="4 4"
             />
           </svg>
         </div>
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           
-          {/* Scholarly subtitle / kicker: Clean text with dot separators (Zero-Pill) */}
-          <div className="inline-flex items-center gap-2 mb-6 text-xs sm:text-sm font-semibold tracking-widest uppercase text-[#D8B45E] font-['Cinzel',serif]">
+          {/* Scholarly subtitle / kicker: Clean text with dot separators with entrance fade-up */}
+          <div className="animate-hero-fade-up animation-delay-100 inline-flex items-center gap-2 mb-6 text-xs sm:text-sm font-semibold tracking-widest uppercase text-[#D8B45E] font-['Cinzel',serif]">
             <span>QUR’AN</span>
             <span className="text-[#D8B45E]/50">·</span>
             <span>SUNNAH</span>
@@ -51,21 +65,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <span>STRUCTURED LEARNING</span>
           </div>
 
-          {/* Main Heading */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6 font-serif">
+          {/* Main Heading with entrance fade-up */}
+          <h1 className="animate-hero-fade-up animation-delay-200 text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6 font-serif">
             NABOBI ACADEMY
             <span className="block text-2xl sm:text-4xl lg:text-5xl font-bold text-[#FBF7EC] mt-5 leading-[1.45] sm:leading-[1.4] lg:leading-[1.35] font-['Hind_Siliguri',sans-serif]">
               কুরআন-সুন্নাহর আলোকে রুকইয়াহ শারইয়্যাহ শেখার একটি নির্ভরযোগ্য প্ল্যাটফর্ম
             </span>
           </h1>
 
-          {/* Sub-heading */}
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-[#FBF7EC]/90 leading-relaxed font-normal mb-10">
+          {/* Sub-heading with entrance fade-up */}
+          <p className="animate-hero-fade-up animation-delay-350 max-w-2xl mx-auto text-base sm:text-lg text-[#FBF7EC]/90 leading-relaxed font-normal mb-10">
             দলিলভিত্তিক জ্ঞান • কাঠামোবদ্ধ প্রশিক্ষণ • প্র্যাকটিক্যাল লার্নিং
           </p>
 
-          {/* Action CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+          {/* Action CTAs with entrance fade-up & attractive hover animations */}
+          <div className="animate-hero-fade-up animation-delay-500 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+            {/* Primary Button: 'কোর্সসমূহ দেখুন' with shimmer & arrow slide */}
             <button
               onClick={() => {
                 const el = document.getElementById('featured-course');
@@ -75,39 +90,43 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   onNavigate('/course');
                 }
               }}
-              className="w-full sm:w-auto bg-[#D8B45E] hover:bg-[#C8A44E] text-[#0A2922] font-bold text-base px-8 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-98 inline-flex items-center justify-center gap-2 cursor-pointer"
+              className="group relative overflow-hidden w-full sm:w-auto bg-[#D8B45E] hover:bg-[#C8A44E] text-[#0A2922] font-bold text-base px-8 py-3.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-[0_12px_28px_rgba(216,180,94,0.45)] hover:-translate-y-1 active:translate-y-0 active:scale-98 inline-flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>কোর্সসমূহ দেখুন</span>
-              <ArrowRight className="w-5 h-5" />
+              {/* Shimmer light sweep */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
+              
+              <span className="relative z-10">কোর্সসমূহ দেখুন</span>
+              <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1.5" />
             </button>
 
+            {/* Secondary Button: 'WhatsApp যোগাযোগ' with border glow & icon rotation */}
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto bg-white/10 hover:bg-white/15 text-white border border-[#C9A962]/40 font-medium text-base px-7 py-3.5 rounded-xl transition-colors inline-flex items-center justify-center gap-2.5"
+              className="group w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-[#D8B45E]/50 hover:border-[#D8B45E] font-medium text-base px-7 py-3.5 rounded-xl transition-all duration-300 hover:shadow-[0_8px_24px_rgba(216,180,94,0.25)] hover:-translate-y-1 active:translate-y-0 active:scale-98 inline-flex items-center justify-center gap-2.5 backdrop-blur-xs"
             >
-              <MessageCircle className="w-5 h-5 text-[#C9A962]" />
+              <MessageCircle className="w-5 h-5 text-[#D8B45E] transition-transform duration-300 group-hover:scale-115 group-hover:-rotate-12" />
               <span>WhatsApp যোগাযোগ</span>
             </a>
           </div>
 
-          {/* Quick Academy Indicators */}
-          <div className="mt-14 pt-8 border-t border-[#FBF7EC]/10 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm text-[#FBF7EC]/80">
+          {/* Quick Academy Indicators with gentle entrance fade-in */}
+          <div className="animate-hero-fade-in animation-delay-650 mt-14 pt-8 border-t border-[#FBF7EC]/10 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm text-[#FBF7EC]/80">
             <div className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#C9A962]" />
+              <CheckCircle2 className="w-4 h-4 text-[#D8B45E]" />
               <span>সহীহ শরয়ী মানদণ্ড</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#C9A962]" />
+              <CheckCircle2 className="w-4 h-4 text-[#D8B45E]" />
               <span>দায়ী ও উস্তাদ</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#C9A962]" />
+              <CheckCircle2 className="w-4 h-4 text-[#D8B45E]" />
               <span>১০ দরসের ট্রায়াল সুযোগ</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#C9A962]" />
+              <CheckCircle2 className="w-4 h-4 text-[#D8B45E]" />
               <span>দৈনিক সরাসরি প্রশ্নোত্তর</span>
             </div>
           </div>
